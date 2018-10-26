@@ -11,6 +11,10 @@ $(document).ready(function() {
         playerChosen: false,
         enemyChosen: false
     }
+
+    $("#attack").click(function() {
+        attackFunction();
+    })
     
     // Start Character Set-up
     let vader = {
@@ -24,7 +28,7 @@ $(document).ready(function() {
 
     let yoda = {
         name: "Yoda",
-        HP: 100,
+        HP: 75,
         AP: 25,
         CAP: 25,
         isDead: false,
@@ -34,15 +38,15 @@ $(document).ready(function() {
     let grievous = {
         name: "General Grievous",
         HP: 100,
-        AP: 25,
-        CAP: 25,
+        AP: 35,
+        CAP: 35,
         isDead: false,
         reference: $("#Grievous")
     }
 
     let luke = {
         name: "Luke Skywalker",
-        HP: 100,
+        HP: 120,
         AP: 25,
         CAP: 25,
         isDead: false,
@@ -63,21 +67,23 @@ $(document).ready(function() {
         currentChar.reference.find(".char_name").text(currentChar.name)
         updateHP(currentChar);
     }
+
+    let user;
+    let enemy;
     // End Character Set-up
 
     function updateHP(char) {
         for (let i = 0; i < characters.length; i++) {
-            char.reference.find(".char_hp").text(currentChar.HP);
+            char.reference.find(".char_hp").text(char.HP);
         }
     }
 
-
-    // let moveFunction = function(character) {
     function moveFunction(character) {
         // if player hasn't been selected
         if (!game.playerChosen) {
             // clicked character moves to "player" section
             player.append(character.reference.detach())
+            user = character;
 
             // everyone else moves to "enemies" section 
             for(let i = 0; i < characters.length; i++) {
@@ -92,51 +98,51 @@ $(document).ready(function() {
         } else if (game.playerChosen && !game.enemyChosen) {
             defender.append(character.reference.detach());
             game.enemyChosen = true;
+            enemy = character;
+        }
+    }
+
+    function attackFunction() {
+        if (game.playerChosen && game.enemyChosen) {
+            user.HP -= enemy.AP;
+            enemy.HP -= user.AP;
+            updateHP(user);
+            updateHP(enemy);
+            
+            if (user.HP > 0 && enemy.HP > 0) {
+                gameLog.html(
+                    user.name + " did " + user.AP + " damage to " + enemy.name + "<br>" +
+                    enemy.name + " did " + enemy.AP + " damage to " + user.name
+                );
+            } else if (user.HP <= 0) {
+                // lose
+            } else if (enemy.HP <= 0) {
+                enemy.reference.hide();
+                game.enemyChosen = false;
+            }
+
+            user.AP += user.CAP;
         }
     }
 
 
-
-
-    // Random testing
-    // vader.reference.find(".char_name").text("test");
-    // var yoda = $("#Yoda");
-    // var vader = $("#Vader");
-    // var grievous = $("#Grievous");
-    // var luke = $("#Luke");
-
-    // player.append(yoda.detach());
-    // enemies.append(vader.detach());
-    // enemies.append(grievous.detach());
-    // enemies.append(luke.detach());
-
-
     /*
-    Idea for structure:
+    To do (primary):
+        make defeated enemies disappear
+        add win / lose conditions
+        add reset button which appears when the game is over
+        update attack power and starting HP of all characters
 
-    Each character gets an object like the following
-    let vader = {
-        name: "Darth Vader", 
-        HP: 100,            (use this to update char_name and char_hp)
-        AP: 25,
-        CAP: 25,
-        isDead: false,
-        reference: $("...")
-    }
+    To do (secondary):
+        update style of game log
+        update style of starting game screen (only the characters and "select your character" on screen)
 
 
-    From there, whichever the player selects gets assigned to a "player" variable
-    which is used for game mechanics
+    Random ideas:
 
-    selected enemy could be assigned to "currentEnemy" variable
-    when currentEnemy dies, delete that enemy
-
-
-    Other ideas:
-    Have a permanent "enemy" placeholder in the Defender area
-    When an enemy is clicked, set its display to none and copy all of its
-    attributes to the defender placeholder
-
-    Game object for win/lose conditions?
+    Use an array for defeated enemies -- require ALL enemies to be defeated
+    before game ends (or if player is defeated)
+        check if array contains "false"
+        if it doesn't, the game is over (i.e. all have defeated = true)
     */
 });
