@@ -15,8 +15,8 @@ $(document).ready(function() {
     // Start Character Set-up
     let vader = {
         name: "Darth Vader", 
-        HP: 100,
-        AP: 25,
+        HP: 150,
+        AP: 30,
         CAP: 25,
         isDead: false,
         reference: $("#Vader"),
@@ -51,15 +51,25 @@ $(document).ready(function() {
 
     let characters = [yoda, vader, grievous, luke];
 
+    // Adding properties
     for (let i = 0; i < characters.length; i++) {
-        characters[i].reference.click(/* ADD THE MOVEFUNCTION HERE*/);
-    }
+        currentChar = characters[i];
+        // Adding onClick event
+        currentChar.reference.click(function() {
+            moveFunction(characters[i]);
+        });
 
-    // luke.reference.click(function(event) {
-    //     alert("test");
-    // });
+        // Adding character names
+        currentChar.reference.find(".char_name").text(currentChar.name)
+        updateHP(currentChar);
+    }
     // End Character Set-up
 
+    function updateHP(char) {
+        for (let i = 0; i < characters.length; i++) {
+            char.reference.find(".char_hp").text(currentChar.HP);
+        }
+    }
 
 
     // let moveFunction = function(character) {
@@ -77,15 +87,19 @@ $(document).ready(function() {
             }
 
             game.playerChosen = true;
+        
+        // if the player has already been chosen, but the enemy hasn't been chosen
         } else if (game.playerChosen && !game.enemyChosen) {
             defender.append(character.reference.detach());
+            game.enemyChosen = true;
         }
     }
 
-    // moveFunction(vader);
-    // moveFunction(luke);
+
+
 
     // Random testing
+    // vader.reference.find(".char_name").text("test");
     // var yoda = $("#Yoda");
     // var vader = $("#Vader");
     // var grievous = $("#Grievous");

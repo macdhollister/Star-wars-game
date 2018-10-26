@@ -16,7 +16,7 @@ body {
     background-size: cover;
 }
 
-#player, #enemies, #fight_section, #defender {
+#player, #enemies, #fight_section, #defender, #atk-btn {
     width: 100%;
     display: flex;
 }
