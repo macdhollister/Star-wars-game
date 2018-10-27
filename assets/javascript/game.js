@@ -41,27 +41,27 @@ $(document).ready(function() {
 
     function resetStats() {
         vader.name = "Darth Vader";
-        vader.HP = 150;
-        vader.AP = 30;
-        vader.CAP = 30;
+        vader.HP = 210;
+        vader.AP = 40;
+        vader.CAP = 40;
         vader.reference = $("#Vader");
 
         yoda.name = "Yoda";
-        yoda.HP = 75;
-        yoda.AP = 25;
-        yoda.CAP = 25;
+        yoda.HP = 200;
+        yoda.AP = 50;
+        yoda.CAP = 50;
         yoda.reference = $("#Yoda");
 
         grievous.name = "General Grievous";
-        grievous.HP = 100;
-        grievous.AP = 35;
-        grievous.CAP = 35;
+        grievous.HP = 290;
+        grievous.AP = 30;
+        grievous.CAP = 30;
         grievous.reference = $("#Grievous");
 
         luke.name = "Luke Skywalker";
-        luke.HP = 120;
-        luke.AP = 25;
-        luke.CAP = 25;
+        luke.HP = 340;
+        luke.AP = 20;
+        luke.CAP = 20;
         luke.reference = $("#Luke");
     }
 
@@ -174,6 +174,8 @@ $(document).ready(function() {
         game.playerChosen = false;
         game.enemyChosen = false;
         game.enemiesDefeated = 0;
+
+        gameLog.text("");
     }
 
     resetGame();
