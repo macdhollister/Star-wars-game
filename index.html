@@ -28,6 +28,13 @@
             </div>
             <div class="row">
                 <div class="col" id="img_col">
+
+                    <div class="char_container" id="Yoda">
+                        <div class="char_name"></div>
+                        <img class="char_img" src="assets/images/yoda.jpg">
+                        <div class="char_hp"></div>
+                    </div>
+
                     <div class="char_container" id="Vader">
                         <div class="char_name"></div>
                         <img class="char_img" src="assets/images/darth_vader.png">
@@ -46,11 +53,6 @@
                         <div class="char_hp"></div>
                     </div>
 
-                    <div class="char_container" id="Yoda">
-                        <div class="char_name"></div>
-                        <img class="char_img" src="assets/images/yoda.jpg">
-                        <div class="char_hp"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -73,14 +75,16 @@
                     <div id="defender">Defender</div>
                     <div id="defender_content"></div>
 
-                    <div id="atk-btn">
-                        <button id="attack" class="btn btn-danger">ATTACK!</button>
+                    <div id="attack">
+                        <button id="atk-btn" class="btn btn-danger">ATTACK!</button>
                     </div>
 
-                    <div id="game_log"></div>
+                    <!-- <div id="game_log"></div> -->
                 </div>
             </div>
         </div>
+
+        <div id="game_log"></div>
     </div>
 
     <!-- Upon win or lose, this screen appears -->
@@ -92,8 +96,8 @@
                     <h3>Play again?</h3>
                     <div class="container">
                         <div class="row">
-                            <div class="col-6"><button class="btn btn-primary">Yes</button></div>
-                            <div class="col-6"><button class="btn btn-danger">No</button></div>
+                            <div id="resetGame" class="col-6"><button class="btn btn-primary">Yes</button></div>
+                            <div id="closeGame" class="col-6"><button class="btn btn-danger">No</button></div>
                         </div>
                     </div>
                 </div>

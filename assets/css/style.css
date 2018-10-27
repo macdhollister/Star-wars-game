@@ -16,7 +16,7 @@ body {
     background-size: cover;
 }
 
-#player, #enemies, #fight_section, #defender, #atk-btn {
+#player, #enemies, #fight_section, #defender, #attack {
     width: 100%;
     display: flex;
 }
@@ -61,6 +61,11 @@ body {
     font-size: 20px;
 }
 
+#game_log {
+    position: absolute;
+    bottom: 0;
+}
+
 #gameOver {
     text-align: center;
 }
@@ -87,8 +92,4 @@ body {
     display: inline-block;
     text-align: center;
     margin: 10px;
-}
-
-.hidden {
-    display: none;
 }

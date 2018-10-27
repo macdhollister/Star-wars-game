@@ -13,56 +13,59 @@ $(document).ready(function() {
     // Game mechanics
     let game = {
         playerChosen: false,
-        enemyChosen: false
+        enemyChosen: false,
+        enemiesDefeated: 0
     }
 
-    $("#attack").click(function() {
+    $("#atk-btn").click(function() {
         attack();
     })
 
-    let enemiesDefeated = 0;
+    $("#resetGame").click(function() {
+        resetGame();
+    })
+
+    $("#closeGame").click(function() {
+        alert("May the Force be With You!")
+        self.close();
+    })
 
     // Start Character Set-up
-    let vader;
-    let yoda;
-    let grievous;
-    let luke;
+    let vader = {};
 
-    function setStats() {
-        vader = {
-            name: "Darth Vader", 
-            HP: 150,
-            AP: 30,
-            CAP: 25,
-            reference: $("#Vader"),
-        }
-    
-        yoda = {
-            name: "Yoda",
-            HP: 75,
-            AP: 25,
-            CAP: 25,
-            reference: $("#Yoda")
-        }
-    
-        grievous = {
-            name: "General Grievous",
-            HP: 100,
-            AP: 35,
-            CAP: 35,
-            reference: $("#Grievous")
-        }
-    
-        luke = {
-            name: "Luke Skywalker",
-            HP: 120,
-            AP: 25,
-            CAP: 25,
-            reference: $("#Luke")
-        }
+    let yoda = {};
+
+    let grievous = {};
+
+    let luke = {};
+
+    function resetStats() {
+        vader.name = "Darth Vader";
+        vader.HP = 150;
+        vader.AP = 30;
+        vader.CAP = 30;
+        vader.reference = $("#Vader");
+
+        yoda.name = "Yoda";
+        yoda.HP = 75;
+        yoda.AP = 25;
+        yoda.CAP = 25;
+        yoda.reference = $("#Yoda");
+
+        grievous.name = "General Grievous";
+        grievous.HP = 100;
+        grievous.AP = 35;
+        grievous.CAP = 35;
+        grievous.reference = $("#Grievous");
+
+        luke.name = "Luke Skywalker";
+        luke.HP = 120;
+        luke.AP = 25;
+        luke.CAP = 25;
+        luke.reference = $("#Luke");
     }
-    setStats();
 
+    resetStats();
 
     let characters = [yoda, vader, grievous, luke];
     // Adding properties
@@ -101,8 +104,8 @@ $(document).ready(function() {
                     enemies.append(characters[i].reference.detach());
                 }
             }
-            startScreen.addClass("hidden");
-            gameScreen.removeClass("hidden");
+            startScreen.hide();
+            gameScreen.show();
             
 
             game.playerChosen = true;
@@ -112,6 +115,10 @@ $(document).ready(function() {
             defender.append(character.reference.detach());
             game.enemyChosen = true;
             enemy = character;
+            gameLog.html("");
+            if (game.enemiesDefeated >= 2) {
+                $("#enemies").hide();
+            }
         }
     }
 
@@ -130,18 +137,20 @@ $(document).ready(function() {
             } else if (user.HP <= 0) {
                 // lose
                 $("#gameOverText").text("lose")
-                gameOverScreen.removeClass("hidden");
-                gameScreen.addClass("hidden");
+                gameOverScreen.show();
+                gameScreen.hide();
             } else if (enemy.HP <= 0) {
                 enemy.reference.hide();
                 game.enemyChosen = false;
-                enemiesDefeated++;
+                game.enemiesDefeated++;
 
-                if (enemiesDefeated >= 3) {
+                gameLog.html(user.name + " defeated " + enemy.name);
+
+                if (game.enemiesDefeated >= 3) {
                     // win
                     $("#gameOverText").text("win")
-                    gameOverScreen.removeClass("hidden");
-                    gameScreen.addClass("hidden");
+                    gameOverScreen.show();
+                    gameScreen.hide();
                 }
             }
 
@@ -149,18 +158,23 @@ $(document).ready(function() {
         }
     }
 
-    // buildStartScreen();
-    /*
-    To do (primary):
-        add reset button which appears when the game is over
-        update attack power and starting HP of all characters
-    To do (secondary):
-        update style of game log
-        update style of starting game screen (only the characters and "select your character" on screen)
-    Random ideas:
-    Use an array for defeated enemies -- require ALL enemies to be defeated
-    before game ends (or if player is defeated)
-        check if array contains "false"
-        if it doesn't, the game is over (i.e. all have defeated = true)
-    */
+    function resetGame() {
+        resetStats()
+        for (let i = 0; i < characters.length; i++) {
+            characters[i].reference.show();
+            characters[i].reference.detach().appendTo("#img_col");
+            updateHP(characters[i]);
+        }
+
+        startScreen.show();
+        gameScreen.hide();
+        gameOverScreen.hide();
+        $("#enemies").show();
+
+        game.playerChosen = false;
+        game.enemyChosen = false;
+        game.enemiesDefeated = 0;
+    }
+
+    resetGame();
 });
