@@ -60,3 +60,31 @@ body {
     width: 100%;
     font-size: 20px;
 }
+
+#gameOver {
+    text-align: center;
+}
+
+#winOrLose {
+    font-size: 200px;
+}
+
+#charChoose {
+    text-align: center;
+    font-size: 100px;
+}
+
+#img_col {
+    text-align: center;
+}
+
+.startImage {
+    width: 200px;
+    height: 200px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue;
+    display: inline-block;
+    text-align: center;
+    margin: 10px;
+}

@@ -13,16 +13,17 @@ $(document).ready(function() {
     }
 
     $("#attack").click(function() {
-        attackFunction();
+        attack();
     })
-    
+
+    let enemiesDefeated = 0;
+
     // Start Character Set-up
     let vader = {
         name: "Darth Vader", 
         HP: 150,
         AP: 30,
         CAP: 25,
-        isDead: false,
         reference: $("#Vader"),
     }
 
@@ -31,7 +32,6 @@ $(document).ready(function() {
         HP: 75,
         AP: 25,
         CAP: 25,
-        isDead: false,
         reference: $("#Yoda")
     }
 
@@ -40,7 +40,6 @@ $(document).ready(function() {
         HP: 100,
         AP: 35,
         CAP: 35,
-        isDead: false,
         reference: $("#Grievous")
     }
 
@@ -49,18 +48,16 @@ $(document).ready(function() {
         HP: 120,
         AP: 25,
         CAP: 25,
-        isDead: false,
         reference: $("#Luke")
     }
 
     let characters = [yoda, vader, grievous, luke];
-
     // Adding properties
     for (let i = 0; i < characters.length; i++) {
         currentChar = characters[i];
         // Adding onClick event
         currentChar.reference.click(function() {
-            moveFunction(characters[i]);
+            move(characters[i]);
         });
 
         // Adding character names
@@ -78,7 +75,7 @@ $(document).ready(function() {
         }
     }
 
-    function moveFunction(character) {
+    function move(character) {
         // if player hasn't been selected
         if (!game.playerChosen) {
             // clicked character moves to "player" section
@@ -102,7 +99,7 @@ $(document).ready(function() {
         }
     }
 
-    function attackFunction() {
+    function attack() {
         if (game.playerChosen && game.enemyChosen) {
             user.HP -= enemy.AP;
             enemy.HP -= user.AP;
@@ -116,9 +113,16 @@ $(document).ready(function() {
                 );
             } else if (user.HP <= 0) {
                 // lose
+                buildWinScreen("lose");
             } else if (enemy.HP <= 0) {
                 enemy.reference.hide();
                 game.enemyChosen = false;
+                enemiesDefeated++;
+
+                if (enemiesDefeated >= 3) {
+                    // win
+                    buildWinScreen("win");
+                }
             }
 
             user.AP += user.CAP;
@@ -126,10 +130,92 @@ $(document).ready(function() {
     }
 
 
+    function buildWinScreen(winLose) {
+        $("body").empty()
+
+        $("body")
+        .append(
+            $("<div class='container'>")
+            .append(
+                $("<div class='row'>")
+                .append(
+                    $("<div class='col' id='gameOver'>")
+                    .append(
+                        $("<h1 id='winOrLose'>").text("You " + winLose + "!")
+                    )
+    
+                    .append(
+                        $("<h3>").text("Play again?")
+                    )
+    
+                    .append(
+                        $("<div class='container'>")
+                        .append(
+                            $("<div class='row'>")
+                            .append(
+                                $("<div class='col-6'>")
+                                .append(
+                                    $("<button class='btn btn-primary'>").text("Yes")
+                                )
+                            )
+    
+                            .append(
+                                $("<div class='col-6'>")
+                                .append(
+                                    $("<button class='btn btn-danger'>").text("No")
+                                )
+                            )
+    
+                        )
+                    )
+                )
+            )
+        );
+    }
+
+    function buildStartScreen() {
+        $("body").empty();
+
+        $("body")
+        .append(
+            $("<div class='container'>")
+            .append(
+                $("<div class='row'>")
+                .append(
+                    $("<div class='col'>")
+                    .append(
+                        $("<h1 id='charChoose'>")
+                        .text("Choose Your Character!")
+                    )
+                )
+            )
+
+            .append(
+                $("<div class='row'>")
+                .append(
+                    $("<div class='col' id='img_col'>")
+                    .append(
+                        $("<img class='startImage' src='assets/images/darth_vader.png'>")
+                    )
+                    .append(
+                        $("<img class='startImage' src='assets/images/general_grievous.jpg'>")
+                    )
+                    .append(
+                        $("<img class='startImage' src='assets/images/Luke_Skywalker.jpg'>")
+                    )
+                    .append(
+                        $("<img class='startImage' src='assets/images/yoda.jpg'>")
+                    )
+                )
+            )
+        )
+    }
+
+    buildStartScreen();
+
+
     /*
     To do (primary):
-        make defeated enemies disappear
-        add win / lose conditions
         add reset button which appears when the game is over
         update attack power and starting HP of all characters
 
