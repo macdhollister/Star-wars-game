@@ -1,10 +1,14 @@
 $(document).ready(function() {
     // jQuery ease-of-access variables
-    let charSelect = $("#char_select");
     let enemies = $("#enemies_content");
     let defender = $("#defender_content");
     let gameLog = $("#game_log");
     let player = $("#player_content");
+
+    // Game Phases
+    let startScreen = $("#startScreen");
+    let gameScreen = $("#gameScreen");
+    let gameOverScreen = $("#gameOverScreen")
 
     // Game mechanics
     let game = {
@@ -19,45 +23,54 @@ $(document).ready(function() {
     let enemiesDefeated = 0;
 
     // Start Character Set-up
-    let vader = {
-        name: "Darth Vader", 
-        HP: 150,
-        AP: 30,
-        CAP: 25,
-        reference: $("#Vader"),
-    }
+    let vader;
+    let yoda;
+    let grievous;
+    let luke;
 
-    let yoda = {
-        name: "Yoda",
-        HP: 75,
-        AP: 25,
-        CAP: 25,
-        reference: $("#Yoda")
+    function setStats() {
+        vader = {
+            name: "Darth Vader", 
+            HP: 150,
+            AP: 30,
+            CAP: 25,
+            reference: $("#Vader"),
+        }
+    
+        yoda = {
+            name: "Yoda",
+            HP: 75,
+            AP: 25,
+            CAP: 25,
+            reference: $("#Yoda")
+        }
+    
+        grievous = {
+            name: "General Grievous",
+            HP: 100,
+            AP: 35,
+            CAP: 35,
+            reference: $("#Grievous")
+        }
+    
+        luke = {
+            name: "Luke Skywalker",
+            HP: 120,
+            AP: 25,
+            CAP: 25,
+            reference: $("#Luke")
+        }
     }
+    setStats();
 
-    let grievous = {
-        name: "General Grievous",
-        HP: 100,
-        AP: 35,
-        CAP: 35,
-        reference: $("#Grievous")
-    }
-
-    let luke = {
-        name: "Luke Skywalker",
-        HP: 120,
-        AP: 25,
-        CAP: 25,
-        reference: $("#Luke")
-    }
 
     let characters = [yoda, vader, grievous, luke];
     // Adding properties
     for (let i = 0; i < characters.length; i++) {
-        currentChar = characters[i];
+        let currentChar = characters[i];
         // Adding onClick event
         currentChar.reference.click(function() {
-            move(characters[i]);
+            move(currentChar);
         });
 
         // Adding character names
@@ -88,6 +101,9 @@ $(document).ready(function() {
                     enemies.append(characters[i].reference.detach());
                 }
             }
+            startScreen.addClass("hidden");
+            gameScreen.removeClass("hidden");
+            
 
             game.playerChosen = true;
         
@@ -113,7 +129,9 @@ $(document).ready(function() {
                 );
             } else if (user.HP <= 0) {
                 // lose
-                buildWinScreen("lose");
+                $("#gameOverText").text("lose")
+                gameOverScreen.removeClass("hidden");
+                gameScreen.addClass("hidden");
             } else if (enemy.HP <= 0) {
                 enemy.reference.hide();
                 game.enemyChosen = false;
@@ -121,7 +139,9 @@ $(document).ready(function() {
 
                 if (enemiesDefeated >= 3) {
                     // win
-                    buildWinScreen("win");
+                    $("#gameOverText").text("win")
+                    gameOverScreen.removeClass("hidden");
+                    gameScreen.addClass("hidden");
                 }
             }
 
@@ -129,103 +149,15 @@ $(document).ready(function() {
         }
     }
 
-
-    function buildWinScreen(winLose) {
-        $("body").empty()
-
-        $("body")
-        .append(
-            $("<div class='container'>")
-            .append(
-                $("<div class='row'>")
-                .append(
-                    $("<div class='col' id='gameOver'>")
-                    .append(
-                        $("<h1 id='winOrLose'>").text("You " + winLose + "!")
-                    )
-    
-                    .append(
-                        $("<h3>").text("Play again?")
-                    )
-    
-                    .append(
-                        $("<div class='container'>")
-                        .append(
-                            $("<div class='row'>")
-                            .append(
-                                $("<div class='col-6'>")
-                                .append(
-                                    $("<button class='btn btn-primary'>").text("Yes")
-                                )
-                            )
-    
-                            .append(
-                                $("<div class='col-6'>")
-                                .append(
-                                    $("<button class='btn btn-danger'>").text("No")
-                                )
-                            )
-    
-                        )
-                    )
-                )
-            )
-        );
-    }
-
-    function buildStartScreen() {
-        $("body").empty();
-
-        $("body")
-        .append(
-            $("<div class='container'>")
-            .append(
-                $("<div class='row'>")
-                .append(
-                    $("<div class='col'>")
-                    .append(
-                        $("<h1 id='charChoose'>")
-                        .text("Choose Your Character!")
-                    )
-                )
-            )
-
-            .append(
-                $("<div class='row'>")
-                .append(
-                    $("<div class='col' id='img_col'>")
-                    .append(
-                        $("<img class='startImage' src='assets/images/darth_vader.png'>")
-                    )
-                    .append(
-                        $("<img class='startImage' src='assets/images/general_grievous.jpg'>")
-                    )
-                    .append(
-                        $("<img class='startImage' src='assets/images/Luke_Skywalker.jpg'>")
-                    )
-                    .append(
-                        $("<img class='startImage' src='assets/images/yoda.jpg'>")
-                    )
-                )
-            )
-        )
-    }
-
-    buildStartScreen();
-
-
+    // buildStartScreen();
     /*
     To do (primary):
         add reset button which appears when the game is over
         update attack power and starting HP of all characters
-
     To do (secondary):
         update style of game log
         update style of starting game screen (only the characters and "select your character" on screen)
-
-
     Random ideas:
-
     Use an array for defeated enemies -- require ALL enemies to be defeated
     before game ends (or if player is defeated)
         check if array contains "false"

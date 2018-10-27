@@ -18,13 +18,16 @@
 </head>
 
 <body class="bg">
-    <header>
-
-    </header>
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <div id="char_select">
+    <!-- Game Starts on this screen -->
+    <div id="startScreen">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1 id="charChoose">Choose Your Character!</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" id="img_col">
                     <div class="char_container" id="Vader">
                         <div class="char_name"></div>
                         <img class="char_img" src="assets/images/darth_vader.png">
@@ -49,24 +52,51 @@
                         <div class="char_hp"></div>
                     </div>
                 </div>
-
-                <div id="enemies">Enemies Available to Attack</div>
-                <div id="enemies_content"></div>
-
-                <div id="player">Your Character</div>
-                <div id="player_content"></div>
-
             </div>
+        </div>
+    </div>
 
-            <div class="col-6">
-                <div id="defender">Defender</div>
-                <div id="defender_content"></div>
+    <!-- Game takes place here -->
+    <div id="gameScreen" class="hidden">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div id="enemies">Enemies Available to Attack</div>
+                    <div id="enemies_content"></div>
 
-                <div id="atk-btn">
-                    <button id="attack" class="btn btn-danger">ATTACK!</button>
+                    <div id="player">Your Character</div>
+                    <div id="player_content"></div>
+
                 </div>
 
-                <div id="game_log"></div>
+                <div class="col-6">
+                    <div id="defender">Defender</div>
+                    <div id="defender_content"></div>
+
+                    <div id="atk-btn">
+                        <button id="attack" class="btn btn-danger">ATTACK!</button>
+                    </div>
+
+                    <div id="game_log"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upon win or lose, this screen appears -->
+    <div id="gameOverScreen" class="hidden">
+        <div class="container">
+            <div class="row">
+                <div class="col" id="gameOver">
+                    <h1 id="winOrLose">You <span id="gameOverText"></span>!</h1>
+                    <h3>Play again?</h3>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6"><button class="btn btn-primary">Yes</button></div>
+                            <div class="col-6"><button class="btn btn-danger">No</button></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
